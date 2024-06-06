@@ -7,7 +7,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
-import { TextField } from '@mui/material';
+import { FilledTextFieldProps, OutlinedTextFieldProps, StandardTextFieldProps, TextField, TextFieldVariants } from '@mui/material';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
@@ -15,6 +15,7 @@ import { Div } from '../utils/styled-components';
 import { Heading } from '../utils/theme/typo';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { primary } from '../utils/theme/colors';
+import { JSX } from 'react/jsx-runtime';
 
 const steps = [
     'Select the Nearest Center',
@@ -71,7 +72,7 @@ export default function AppStepper() {
     const handleNext = () => {
         const newActiveStep =
             isLastStep() && !allStepsCompleted()
-                ? steps.findIndex((step, i) => !(i in completed))
+                ? steps.findIndex((_, i) => !(i in completed))
                 : activeStep + 1;
         setActiveStep(newActiveStep);
     };
@@ -179,7 +180,7 @@ export default function AppStepper() {
                                 label="Select Date"
                                 value={selectedDate}
                                 onChange={handleDateChange}
-                                renderInput={(params: unknown) => <TextField {...params} />}
+                                renderInput={(params: JSX.IntrinsicAttributes & { variant?: TextFieldVariants | undefined; } & Omit<FilledTextFieldProps | OutlinedTextFieldProps | StandardTextFieldProps, "variant">) => <TextField {...params} />}
                             />
                         </LocalizationProvider>
                     </Box>
