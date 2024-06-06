@@ -5,7 +5,7 @@ import Step from '@mui/material/Step';
 import StepButton from '@mui/material/StepButton';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import Select from '@mui/material/Select';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import { TextField } from '@mui/material';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
@@ -15,6 +15,7 @@ import { Div } from '../utils/styled-components';
 import { Heading } from '../utils/theme/typo';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { primary } from '../utils/theme/colors';
+
 const steps = [
     'Select the Nearest Center',
     'Select a Service',
@@ -22,6 +23,7 @@ const steps = [
     'Information about the User’s Details',
     'Confirmation'
 ];
+
 const services = [
     'Service 1',
     'Service 2',
@@ -29,6 +31,7 @@ const services = [
     'Service 4',
     'Service 5'
 ];
+
 const hospitals = [
     { id: 1, name: 'Ariege' },
     { id: 2, name: 'Bouches - Du - Rhone' },
@@ -39,9 +42,7 @@ const hospitals = [
 
 export default function AppStepper() {
     const [activeStep, setActiveStep] = React.useState(0);
-    const [completed, setCompleted] = React.useState<{
-        [k: number]: boolean;
-    }>({});
+    const [completed, setCompleted] = React.useState<{ [k: number]: boolean }>({});
     const [selectedHospital, setSelectedHospital] = React.useState('');
     const [selectedService, setSelectedService] = React.useState('');
     const [selectedDate, setSelectedDate] = React.useState<Date | null>(null);
@@ -83,24 +84,17 @@ export default function AppStepper() {
         setActiveStep(step);
     };
 
-    const handleComplete = () => {
-        const newCompleted = completed;
-        newCompleted[activeStep] = true;
-        setCompleted(newCompleted);
-        handleNext();
-    };
-
     const handleReset = () => {
         setActiveStep(0);
         setCompleted({});
     };
 
-    const handleHospitalChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-        setSelectedHospital(event.target.value as string);
+    const handleHospitalChange = (event: SelectChangeEvent<string>) => {
+        setSelectedHospital(event.target.value);
     };
 
-    const handleServiceChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-        setSelectedService(event.target.value as string);
+    const handleServiceChange = (event: SelectChangeEvent<string>) => {
+        setSelectedService(event.target.value);
     };
 
     const handleDateChange = (date: Date | null) => {
@@ -185,7 +179,7 @@ export default function AppStepper() {
                                 label="Select Date"
                                 value={selectedDate}
                                 onChange={handleDateChange}
-                                renderInput={(params) => <TextField {...params} />}
+                                renderInput={(params: unknown) => <TextField {...params} />}
                             />
                         </LocalizationProvider>
                     </Box>
@@ -234,7 +228,6 @@ export default function AppStepper() {
                     </React.Fragment>
                 ) : (
                     <React.Fragment>
-
                         <Box sx={{ display: 'flex', flexDirection: 'row', pt: 24 }}>
                             <Button sx={{ width: '200px', mr: 1, borderRadius: 3, background: primary, textTransform: 'capitalize' }} color="success"
                                 variant='contained' onClick={handleNext} >
@@ -247,7 +240,6 @@ export default function AppStepper() {
                                 Back
                             </Button>
                             <Box sx={{ flex: '1 1 auto' }} />
-
                         </Box>
                     </React.Fragment>
                 )}
