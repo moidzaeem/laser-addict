@@ -6,3 +6,7 @@
   box-sizing: border-box;
   text-decoration: none;
 }
+
+.shadow {
+  box-shadow: 0px 6.71px 18.31px 12.21px rgba(0, 0, 0, 0.04);
+}

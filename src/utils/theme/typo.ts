@@ -11,7 +11,7 @@ export const Mainheading = styled(Typography)({
 export const Heading = styled(Typography)({
     fontFamily: "Poppins",
     fontWeight: 600,
-    fontSize: "15.91px",
+    fontSize: "17.91px",
     lineHeight: "26.87px",
 });
 

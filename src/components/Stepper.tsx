@@ -11,7 +11,10 @@ import { TextField } from '@mui/material';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
-
+import { Div } from '../utils/styled-components';
+import { Heading } from '../utils/theme/typo';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import { primary } from '../utils/theme/colors';
 const steps = [
     'Select the Nearest Center',
     'Select a Service',
@@ -27,11 +30,11 @@ const services = [
     'Service 5'
 ];
 const hospitals = [
-    { id: 1, name: 'Hospital A' },
-    { id: 2, name: 'Hospital B' },
-    { id: 3, name: 'Hospital C' },
-    { id: 4, name: 'Hospital D' },
-    { id: 5, name: 'Hospital E' }
+    { id: 1, name: 'Ariege' },
+    { id: 2, name: 'Bouches - Du - Rhone' },
+    { id: 3, name: 'Corse' },
+    { id: 4, name: 'Haute - Savoie' },
+    { id: 5, name: 'Isere' }
 ];
 
 export default function AppStepper() {
@@ -111,6 +114,7 @@ export default function AppStepper() {
     return (
         <Box sx={{ width: '100%' }}>
             <Stepper nonLinear activeStep={activeStep}>
+                {/* horizantal steps line */}
                 {steps.map((label, index) => (
                     <Step key={label} completed={completed[index]}>
                         <StepButton
@@ -128,17 +132,29 @@ export default function AppStepper() {
                     </Step>
                 ))}
             </Stepper>
-            <div>
+            <Div sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 {activeStep === 0 && (
-                    <Box>
-                        <Typography>Select the Nearest Center:</Typography>
+                    <Box sx={{
+                        width: {
+                            lg: '40%',
+                            xs: '100%'
+                        }
+                    }}>
+                        <Heading sx={{ mt: 12, mb: 4, textAlign: 'center' }}>Select the nearest center</Heading>
                         <Select
+                            className='shadow'
+                            fullWidth
+                            startAdornment={<LocationOnIcon />}
                             value={selectedHospital}
                             onChange={handleHospitalChange}
-                            sx={{ minWidth: 120 }}
+                            sx={{
+                                "& .MuiOutlinedInput-notchedOutline": {
+                                    border: "none",
+                                },
+                            }}
                         >
                             {hospitals.map(hospital => (
-                                <MenuItem key={hospital.id} value={hospital.name}>
+                                <MenuItem className='shadow' key={hospital.id} value={hospital.name}>
                                     {hospital.name}
                                 </MenuItem>
                             ))}
@@ -218,38 +234,24 @@ export default function AppStepper() {
                     </React.Fragment>
                 ) : (
                     <React.Fragment>
-                        <Typography sx={{ mt: 2, mb: 1, py: 1 }}>
-                            Step {activeStep + 1}
-                        </Typography>
-                        <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-                            <Button
-                                color="inherit"
+
+                        <Box sx={{ display: 'flex', flexDirection: 'row', pt: 24 }}>
+                            <Button sx={{ width: '200px', mr: 1, borderRadius: 3, background: primary, textTransform: 'capitalize' }} color="success"
+                                variant='contained' onClick={handleNext} >
+                                {isLastStep() ? 'Finish' : 'Next'}
+                            </Button>
+                            <Button sx={{ width: '200px', mr: 1, borderRadius: 3, textTransform: 'capitalize' }} variant='contained'
                                 disabled={activeStep === 0}
                                 onClick={handleBack}
-                                sx={{ mr: 1 }}
                             >
                                 Back
                             </Button>
                             <Box sx={{ flex: '1 1 auto' }} />
-                            <Button onClick={handleNext} sx={{ mr: 1 }}>
-                                {isLastStep() ? 'Finish' : 'Next'}
-                            </Button>
-                            {activeStep !== steps.length &&
-                                (completed[activeStep] ? (
-                                    <Typography variant="caption" sx={{ display: 'inline-block' }}>
-                                        Step {activeStep + 1} already completed
-                                    </Typography>
-                                ) : (
-                                    <Button onClick={handleComplete}>
-                                        {completedSteps() === totalSteps() - 1
-                                            ? 'Finish'
-                                            : 'Complete Step'}
-                                    </Button>
-                                ))}
+
                         </Box>
                     </React.Fragment>
                 )}
-            </div>
+            </Div>
         </Box>
     );
 }
