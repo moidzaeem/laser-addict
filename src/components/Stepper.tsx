@@ -189,38 +189,51 @@ export default function AppStepper() {
       case 1:
         return (
           <Box sx={{ p: 4 }}>
-            <Heading sx={{ mt: 12, mb: 4, textAlign: "center" }}>
-              Select a service
-            </Heading>
-            <TextField
-              className="shadow"
-              fullWidth
-              variant="outlined"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Search"
-              sx={{
-                mb: 5,
-                "& .MuiOutlinedInput-notchedOutline": { border: "none" },
-              }}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon />
-                  </InputAdornment>
-                ),
-              }}
-            />
             <Box
               sx={{
                 display: "flex",
-                flexWrap: "wrap",
-                justifyContent: "center",
+                justifyContent: "space-between",
+                alignItems: "center",
+                pt: 10,
+                pb: 10,
               }}
             >
-              {filteredServices.map((service) => (
-                <ServiceCard key={service.id} service={service} />
-              ))}
+              <div style={{ width: "100%" }} />
+              <Heading style={{ width: "100%" }} sx={{ textAlign: "center" }}>
+                Select a service
+              </Heading>
+              <TextField
+                style={{ width: "100%" }}
+                className="shadow"
+                fullWidth
+                variant="outlined"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                placeholder="Search"
+                sx={{
+                  "& .MuiOutlinedInput-notchedOutline": { border: "none" },
+                }}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </Box>
+            <Box sx={{ display: "flex", justifyContent: "center" }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  justifyContent: "center",
+                }}
+              >
+                {filteredServices.map((service) => (
+                  <ServiceCard key={service.id} service={service} />
+                ))}
+              </Box>
             </Box>
           </Box>
         );
@@ -375,14 +388,12 @@ const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
   },
   [`&.${stepConnectorClasses.active}`]: {
     [`& .${stepConnectorClasses.line}`]: {
-      backgroundImage:
-        "linear-gradient( 95deg,rgb(242,113,33) 0%,rgb(233,64,87) 50%,rgb(138,35,135) 100%)",
+      backgroundImage: "linear-gradient( 136deg, #88D7A5 0%,  #30AA88 100%)",
     },
   },
   [`&.${stepConnectorClasses.completed}`]: {
     [`& .${stepConnectorClasses.line}`]: {
-      backgroundImage:
-        "linear-gradient( 95deg,rgb(242,113,33) 0%,rgb(233,64,87) 50%,rgb(138,35,135) 100%)",
+      backgroundImage: "linear-gradient( 136deg, #88D7A5 0%,  #30AA88 100%)",
     },
   },
   [`& .${stepConnectorClasses.line}`]: {
@@ -408,13 +419,11 @@ const ColorlibStepIconRoot = styled("div")<{
   justifyContent: "center",
   alignItems: "center",
   ...(ownerState.active && {
-    backgroundImage:
-      "linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)",
+    backgroundImage: "linear-gradient( 136deg, #88D7A5 0%,  #30AA88 100%)",
     boxShadow: "0 4px 10px 0 rgba(0,0,0,.25)",
   }),
   ...(ownerState.completed && {
-    backgroundImage:
-      "linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)",
+    backgroundImage: "linear-gradient( 136deg, #88D7A5 0%,  #30AA88 100%)",
   }),
 }));
 function ColorlibStepIcon(props: StepIconProps) {
