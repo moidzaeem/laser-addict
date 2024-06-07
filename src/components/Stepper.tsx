@@ -2,27 +2,37 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
-import StepButton from "@mui/material/StepButton";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import {
+import TextField, {
   FilledTextFieldProps,
   OutlinedTextFieldProps,
   StandardTextFieldProps,
-  TextField,
   TextFieldVariants,
-} from "@mui/material";
+} from "@mui/material/TextField";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DatePicker from "@mui/lab/DatePicker";
-import { Div } from "../utils/styled-components";
-import { Heading } from "../utils/theme/typo";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
+import { Div } from "../utils/styled-components";
+import { Font, Heading } from "../utils/theme/typo";
 import { primary } from "../utils/theme/colors";
+import { Divider, InputAdornment } from "@mui/material";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import StepLabel from "@mui/material/StepLabel";
+import StepConnector, {
+  stepConnectorClasses,
+} from "@mui/material/StepConnector";
+import { styled } from "@mui/material/styles";
+import { StepIconProps } from "@mui/material/StepIcon";
+import BusinessCenterOutlinedIcon from "@mui/icons-material/BusinessCenterOutlined";
+import MedicalServicesOutlinedIcon from "@mui/icons-material/MedicalServicesOutlined";
+import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
+import BadgeOutlinedIcon from "@mui/icons-material/BadgeOutlined";
+import ThumbUpAltOutlinedIcon from "@mui/icons-material/ThumbUpAltOutlined";
 import { JSX } from "react/jsx-runtime";
-
 const steps = [
   "Select the Nearest Center",
   "Select a Service",
@@ -53,6 +63,7 @@ export default function AppStepper() {
     {}
   );
   const [selectedHospital, setSelectedHospital] = React.useState("");
+  const [hospitalFilter, setHospitalFilter] = React.useState("");
   const [selectedService, setSelectedService] = React.useState("");
   const [selectedDate, setSelectedDate] = React.useState<Date | null>(null);
   const [userDetails, setUserDetails] = React.useState({
@@ -61,23 +72,13 @@ export default function AppStepper() {
     phone: "",
   });
 
-  const totalSteps = () => {
-    return steps.length;
-  };
-
-  const completedSteps = () => {
-    return Object.keys(completed).length;
-  };
-
-  const isLastStep = () => {
-    return activeStep === totalSteps() - 1;
-  };
-
-  const allStepsCompleted = () => {
-    return completedSteps() === totalSteps();
-  };
+  const totalSteps = () => steps.length;
+  const completedSteps = () => Object.keys(completed).length;
+  const isLastStep = () => activeStep === totalSteps() - 1;
+  const allStepsCompleted = () => completedSteps() === totalSteps();
 
   const handleNext = () => {
+    if (!validateStep()) return;
     const newActiveStep =
       isLastStep() && !allStepsCompleted()
         ? steps.findIndex((_, i) => !(i in completed))
@@ -85,30 +86,50 @@ export default function AppStepper() {
     setActiveStep(newActiveStep);
   };
 
-  const handleBack = () => {
+  const handleBack = () =>
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
-
-  const handleStep = (step: number) => () => {
-    setActiveStep(step);
-  };
-
   const handleReset = () => {
     setActiveStep(0);
     setCompleted({});
+    setSelectedHospital("");
+    setSelectedService("");
+    setSelectedDate(null);
+    setUserDetails({ name: "", email: "", phone: "" });
   };
 
-  const handleHospitalChange = (event: SelectChangeEvent<string>) => {
-    setSelectedHospital(event.target.value);
+  const validateStep = () => {
+    switch (activeStep) {
+      case 0:
+        if (!selectedHospital) {
+          alert("Please select a hospital before proceeding.");
+          return false;
+        }
+        break;
+      case 1:
+        if (!selectedService) {
+          alert("Please select a service before proceeding.");
+          return false;
+        }
+        break;
+      case 2:
+        if (!selectedDate) {
+          alert("Please select a date before proceeding.");
+          return false;
+        }
+        break;
+      case 3:
+        if (!userDetails.name || !userDetails.email || !userDetails.phone) {
+          alert("Please fill in all user details before proceeding.");
+          return false;
+        }
+        break;
+      default:
+        break;
+    }
+    return true;
   };
 
-  const handleServiceChange = (event: SelectChangeEvent<string>) => {
-    setSelectedService(event.target.value);
-  };
-
-  const handleDateChange = (date: Date | null) => {
-    setSelectedDate(date);
-  };
+  const handleDateChange = (date: Date | null) => setSelectedDate(date);
 
   const handleUserDetailsChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -116,72 +137,72 @@ export default function AppStepper() {
     setUserDetails({ ...userDetails, [event.target.name]: event.target.value });
   };
 
-  return (
-    <Box sx={{ width: "100%" }}>
-      <Stepper nonLinear activeStep={activeStep}>
-        {/* horizantal steps line */}
-        {steps.map((label, index) => (
-          <Step key={label} completed={completed[index]}>
-            <StepButton
-              color="inherit"
-              onClick={handleStep(index)}
-              sx={{
-                transition: "background-color 0.3s ease-in-out",
-                "&:hover": {
-                  backgroundColor: "#f0f0f0", // Adjust the color as per your preference
-                },
-              }}
-            >
-              {label}
-            </StepButton>
-          </Step>
-        ))}
-      </Stepper>
-      <Div
-        sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
-      >
-        {activeStep === 0 && (
-          <Box
-            sx={{
-              width: {
-                lg: "40%",
-                xs: "100%",
-              },
-            }}
-          >
+  const handleSelectChange = (setter) => (event) => {
+    setter(event.target.value);
+  };
+
+  const StepContent = () => {
+    switch (activeStep) {
+      case 0:
+        return (
+          <Box sx={{ width: { lg: "40%", xs: "100%" } }}>
             <Heading sx={{ mt: 12, mb: 4, textAlign: "center" }}>
               Select the nearest center
             </Heading>
-            <Select
-              className="shadow"
+            <TextField
               fullWidth
-              startAdornment={<LocationOnIcon />}
-              value={selectedHospital}
-              onChange={handleHospitalChange}
+              className="shadow"
+              variant="outlined"
+              value={hospitalFilter}
+              onChange={(e) => setHospitalFilter(e.target.value)}
               sx={{
-                "& .MuiOutlinedInput-notchedOutline": {
-                  border: "none",
-                },
+                mb: 2,
+                "& .MuiOutlinedInput-notchedOutline": { border: "none" },
               }}
+              placeholder="Find the nearest center to me"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <LocationOnIcon />
+                  </InputAdornment>
+                ),
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <ArrowDropDownIcon />
+                  </InputAdornment>
+                ),
+              }}
+            />
+            <Box
+              className="shadow"
+              sx={{ maxHeight: "200px", overflowY: "auto" }}
             >
-              {hospitals.map((hospital) => (
-                <MenuItem
-                  className="shadow"
-                  key={hospital.id}
-                  value={hospital.name}
-                >
-                  {hospital.name}
-                </MenuItem>
-              ))}
-            </Select>
+              {hospitals
+                .filter((hospital) =>
+                  hospital.name
+                    .toLowerCase()
+                    .includes(hospitalFilter.toLowerCase())
+                )
+                .map((hospital) => (
+                  <Box
+                    onClick={() => setSelectedHospital(hospital.name)}
+                    key={hospital.id}
+                    sx={{ p: 1 }}
+                  >
+                    <Font sx={{ ml: 2 }}>{hospital.name}</Font>
+                    <Divider sx={{ my: 1 }} />
+                  </Box>
+                ))}
+            </Box>
           </Box>
-        )}
-        {activeStep === 1 && (
+        );
+      case 1:
+        return (
           <Box>
             <Typography>Select a Service:</Typography>
             <Select
               value={selectedService}
-              onChange={handleServiceChange}
+              onChange={handleSelectChange(setSelectedService)}
               sx={{ minWidth: 120 }}
             >
               {services.map((service) => (
@@ -191,8 +212,9 @@ export default function AppStepper() {
               ))}
             </Select>
           </Box>
-        )}
-        {activeStep === 2 && (
+        );
+      case 2:
+        return (
           <Box>
             <Typography>Select Date and Time:</Typography>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -213,8 +235,9 @@ export default function AppStepper() {
               />
             </LocalizationProvider>
           </Box>
-        )}
-        {activeStep === 3 && (
+        );
+      case 3:
+        return (
           <Box>
             <Typography>Information about the User’s Details:</Typography>
             <TextField
@@ -239,15 +262,39 @@ export default function AppStepper() {
               sx={{ mr: 1, mb: 1 }}
             />
           </Box>
-        )}
-        {activeStep === 4 && (
+        );
+      case 4:
+        return (
           <Typography variant="h5" sx={{ mt: 2, mb: 1 }}>
             Thank you for your submission!
           </Typography>
-        )}
+        );
+      default:
+        return null;
+    }
+  };
 
+  return (
+    <Box sx={{ width: "100%" }}>
+      <Stepper
+        nonLinear
+        activeStep={activeStep}
+        alternativeLabel
+        connector={<ColorlibConnector />}
+      >
+        {steps.map((label, index) => (
+          <Step key={label} completed={completed[index]}>
+            <StepLabel StepIconComponent={ColorlibStepIcon}>{label}</StepLabel>
+          </Step>
+        ))}
+      </Stepper>
+
+      <Div
+        sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+      >
+        <StepContent />
         {allStepsCompleted() ? (
-          <React.Fragment>
+          <>
             <Typography sx={{ mt: 2, mb: 1 }}>
               All steps completed - you&apos;re finished
             </Typography>
@@ -255,42 +302,108 @@ export default function AppStepper() {
               <Box sx={{ flex: "1 1 auto" }} />
               <Button onClick={handleReset}>Reset</Button>
             </Box>
-          </React.Fragment>
+          </>
         ) : (
-          <React.Fragment>
-            <Box sx={{ display: "flex", flexDirection: "row", pt: 24, pb: 8 }}>
-              <Button
-                sx={{
-                  width: "200px",
-                  mr: 1,
-                  borderRadius: 3,
-                  background: primary,
-                  textTransform: "capitalize",
-                }}
-                color="success"
-                variant="contained"
-                onClick={handleNext}
-              >
-                {isLastStep() ? "Finish" : "Next"}
-              </Button>
-              <Button
-                sx={{
-                  width: "200px",
-                  mr: 1,
-                  borderRadius: 3,
-                  textTransform: "capitalize",
-                }}
-                variant="contained"
-                disabled={activeStep === 0}
-                onClick={handleBack}
-              >
-                Back
-              </Button>
-              <Box sx={{ flex: "1 1 auto" }} />
-            </Box>
-          </React.Fragment>
+          <Box sx={{ display: "flex", flexDirection: "row", pt: 24, pb: 8 }}>
+            <Button
+              sx={{
+                width: "200px",
+                mr: 1,
+                borderRadius: 3,
+                background: primary,
+                textTransform: "capitalize",
+              }}
+              color="success"
+              variant="contained"
+              onClick={handleNext}
+            >
+              {isLastStep() ? "Finish" : "Next"}
+            </Button>
+            <Button
+              sx={{
+                width: "200px",
+                mr: 1,
+                borderRadius: 3,
+                textTransform: "capitalize",
+              }}
+              variant="contained"
+              disabled={activeStep === 0}
+              onClick={handleBack}
+            >
+              Back
+            </Button>
+            <Box sx={{ flex: "1 1 auto" }} />
+          </Box>
         )}
       </Div>
     </Box>
+  );
+}
+const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
+  [`&.${stepConnectorClasses.alternativeLabel}`]: {
+    top: 22,
+  },
+  [`&.${stepConnectorClasses.active}`]: {
+    [`& .${stepConnectorClasses.line}`]: {
+      backgroundImage:
+        "linear-gradient( 95deg,rgb(242,113,33) 0%,rgb(233,64,87) 50%,rgb(138,35,135) 100%)",
+    },
+  },
+  [`&.${stepConnectorClasses.completed}`]: {
+    [`& .${stepConnectorClasses.line}`]: {
+      backgroundImage:
+        "linear-gradient( 95deg,rgb(242,113,33) 0%,rgb(233,64,87) 50%,rgb(138,35,135) 100%)",
+    },
+  },
+  [`& .${stepConnectorClasses.line}`]: {
+    height: 3,
+    border: 0,
+    backgroundColor:
+      theme.palette.mode === "dark" ? theme.palette.grey[800] : "#eaeaf0",
+    borderRadius: 1,
+  },
+}));
+
+const ColorlibStepIconRoot = styled("div")<{
+  ownerState: { completed?: boolean; active?: boolean };
+}>(({ theme, ownerState }) => ({
+  backgroundColor:
+    theme.palette.mode === "dark" ? theme.palette.grey[700] : "#ccc",
+  zIndex: 1,
+  color: "#fff",
+  width: 50,
+  height: 50,
+  display: "flex",
+  borderRadius: "50%",
+  justifyContent: "center",
+  alignItems: "center",
+  ...(ownerState.active && {
+    backgroundImage:
+      "linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)",
+    boxShadow: "0 4px 10px 0 rgba(0,0,0,.25)",
+  }),
+  ...(ownerState.completed && {
+    backgroundImage:
+      "linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)",
+  }),
+}));
+function ColorlibStepIcon(props: StepIconProps) {
+  const { active, completed, className } = props;
+
+  const icons: { [index: string]: React.ReactElement } = {
+    1: <BusinessCenterOutlinedIcon />,
+    2: <MedicalServicesOutlinedIcon />,
+    3: <CalendarMonthOutlinedIcon />,
+    4: <BadgeOutlinedIcon />,
+    5: <ThumbUpAltOutlinedIcon />,
+  };
+
+  return (
+    <ColorlibStepIconRoot
+      ownerState={{ completed, active }}
+      className={className}
+    >
+      {icons[String(props.icon)]}
+    </ColorlibStepIconRoot>
   );
 }
