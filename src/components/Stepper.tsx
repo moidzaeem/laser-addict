@@ -3,9 +3,8 @@ import Box from "@mui/material/Box";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
+import SearchIcon from "@mui/icons-material/Search";
+
 import {
   FilledTextFieldProps,
   OutlinedTextFieldProps,
@@ -36,30 +35,9 @@ import { JSX } from "react/jsx-runtime";
 import TextField from "@mui/material/TextField";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
-
-const steps = [
-  "Select the Nearest Center",
-  "Select a Service",
-  "Select Date and Time",
-  "Information about the User’s Details",
-  "Confirmation",
-];
-
-const services = [
-  "Service 1",
-  "Service 2",
-  "Service 3",
-  "Service 4",
-  "Service 5",
-];
-
-const hospitals = [
-  { id: 1, name: "Ariege" },
-  { id: 2, name: "Bouches - Du - Rhone" },
-  { id: 3, name: "Corse" },
-  { id: 4, name: "Haute - Savoie" },
-  { id: 5, name: "Isere" },
-];
+import { toast } from "react-toastify";
+import { hospitals, services, steps } from "../utils/data";
+import ServiceCard from "./ServiceCard";
 
 export default function AppStepper() {
   const theme = useTheme();
@@ -107,25 +85,25 @@ export default function AppStepper() {
     switch (activeStep) {
       case 0:
         if (!selectedHospital) {
-          alert("Please select a hospital before proceeding.");
+          toast("Please select a hospital before proceeding.");
           return false;
         }
         break;
       case 1:
         if (!selectedService) {
-          alert("Please select a service before proceeding.");
+          toast("Please select a service before proceeding.");
           return false;
         }
         break;
       case 2:
         if (!selectedDate) {
-          alert("Please select a date before proceeding.");
+          toast("Please select a date before proceeding.");
           return false;
         }
         break;
       case 3:
         if (!userDetails.name || !userDetails.email || !userDetails.phone) {
-          alert("Please fill in all user details before proceeding.");
+          toast("Please fill in all user details before proceeding.");
           return false;
         }
         break;
@@ -143,16 +121,13 @@ export default function AppStepper() {
     setUserDetails({ ...userDetails, [event.target.name]: event.target.value });
   };
 
-  const handleSelectChange =
-    (setter: {
-      (value: React.SetStateAction<string>): void;
-      (arg0: unknown): void;
-    }) =>
-    (event: { target: { value: unknown } }) => {
-      setter(event.target.value);
-    };
   const [hospitalFilter, setHospitalFilter] = React.useState("");
 
+  const [searchTerm, setSearchTerm] = React.useState("");
+
+  const filteredServices = services.filter((service) =>
+    service.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
   const StepContent = () => {
     switch (activeStep) {
       case 0:
@@ -213,25 +188,46 @@ export default function AppStepper() {
         );
       case 1:
         return (
-          <Box>
-            <Typography>Select a Service:</Typography>
-            <Select
-              value={selectedService}
-              onChange={handleSelectChange(setSelectedService)}
-              sx={{ minWidth: 120 }}
+          <Box sx={{ p: 4 }}>
+            <Heading sx={{ mt: 12, mb: 4, textAlign: "center" }}>
+              Select a service
+            </Heading>
+            <TextField
+              className="shadow"
+              fullWidth
+              variant="outlined"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Search"
+              sx={{
+                mb: 5,
+                "& .MuiOutlinedInput-notchedOutline": { border: "none" },
+              }}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon />
+                  </InputAdornment>
+                ),
+              }}
+            />
+            <Box
+              sx={{
+                display: "flex",
+                flexWrap: "wrap",
+                justifyContent: "center",
+              }}
             >
-              {services.map((service) => (
-                <MenuItem key={service} value={service}>
-                  {service}
-                </MenuItem>
+              {filteredServices.map((service) => (
+                <ServiceCard key={service.id} service={service} />
               ))}
-            </Select>
+            </Box>
           </Box>
         );
       case 2:
         return (
           <Box>
-            <Typography>Select Date and Time:</Typography>
+            <Font>Select Date and Time:</Font>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
                 label="Select Date"
@@ -254,7 +250,7 @@ export default function AppStepper() {
       case 3:
         return (
           <Box>
-            <Typography>Information about the User’s Details:</Typography>
+            <Font>Information about the User’s Details:</Font>
             <TextField
               label="Name"
               name="name"
@@ -280,9 +276,9 @@ export default function AppStepper() {
         );
       case 4:
         return (
-          <Typography variant="h5" sx={{ mt: 2, mb: 1 }}>
+          <Font variant="h5" sx={{ mt: 2, mb: 1 }}>
             Thank you for your submission!
-          </Typography>
+          </Font>
         );
       default:
         return null;
@@ -315,9 +311,9 @@ export default function AppStepper() {
         <StepContent />
         {allStepsCompleted() ? (
           <>
-            <Typography sx={{ mt: 2, mb: 1 }}>
+            <Font sx={{ mt: 2, mb: 1 }}>
               All steps completed - you&apos;re finished
-            </Typography>
+            </Font>
             <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
               <Box sx={{ flex: "1 1 auto" }} />
               <Button onClick={handleReset}>Reset</Button>
@@ -335,9 +331,9 @@ export default function AppStepper() {
             <Button
               sx={{
                 width: {
-                  lg: "200px",
                   xs: "150px",
                 },
+                height: "40px",
                 mr: 1,
                 borderRadius: 3,
                 background: primary,
@@ -353,9 +349,9 @@ export default function AppStepper() {
             <Button
               sx={{
                 width: {
-                  lg: "200px",
                   xs: "150px",
                 },
+                height: "40px",
                 mr: 1,
                 borderRadius: 3,
                 textTransform: "capitalize",
