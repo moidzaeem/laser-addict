@@ -2,7 +2,19 @@ import { CardContent } from "@mui/material";
 import { Font, Label } from "../utils/theme/typo";
 import { Div } from "../utils/styled-components";
 
-const ServiceCard = ({ service }) => (
+interface Service {
+  id: number;
+  name: string;
+  duration: string;
+  price: string;
+  sessions?: string;
+  img: string;
+}
+interface ServiceCardProps {
+  service: Service;
+}
+
+const ServiceCard = ({ service }: ServiceCardProps) => (
   <Div className="shadow" sx={{ minWidth: 150, m: 2, borderRadius: 4 }}>
     <CardContent>
       <img style={{ height: 50 }} src={service.img} alt="" />
