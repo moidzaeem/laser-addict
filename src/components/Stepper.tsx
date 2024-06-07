@@ -6,7 +6,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import TextField, {
+import {
   FilledTextFieldProps,
   OutlinedTextFieldProps,
   StandardTextFieldProps,
@@ -33,6 +33,10 @@ import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined
 import BadgeOutlinedIcon from "@mui/icons-material/BadgeOutlined";
 import ThumbUpAltOutlinedIcon from "@mui/icons-material/ThumbUpAltOutlined";
 import { JSX } from "react/jsx-runtime";
+import TextField from "@mui/material/TextField";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
+
 const steps = [
   "Select the Nearest Center",
   "Select a Service",
@@ -58,12 +62,14 @@ const hospitals = [
 ];
 
 export default function AppStepper() {
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
   const [activeStep, setActiveStep] = React.useState(0);
   const [completed, setCompleted] = React.useState<{ [k: number]: boolean }>(
     {}
   );
   const [selectedHospital, setSelectedHospital] = React.useState("");
-  const [hospitalFilter, setHospitalFilter] = React.useState("");
+
   const [selectedService, setSelectedService] = React.useState("");
   const [selectedDate, setSelectedDate] = React.useState<Date | null>(null);
   const [userDetails, setUserDetails] = React.useState({
@@ -137,9 +143,15 @@ export default function AppStepper() {
     setUserDetails({ ...userDetails, [event.target.name]: event.target.value });
   };
 
-  const handleSelectChange = (setter) => (event) => {
-    setter(event.target.value);
-  };
+  const handleSelectChange =
+    (setter: {
+      (value: React.SetStateAction<string>): void;
+      (arg0: unknown): void;
+    }) =>
+    (event: { target: { value: unknown } }) => {
+      setter(event.target.value);
+    };
+  const [hospitalFilter, setHospitalFilter] = React.useState("");
 
   const StepContent = () => {
     switch (activeStep) {
@@ -175,7 +187,7 @@ export default function AppStepper() {
             />
             <Box
               className="shadow"
-              sx={{ maxHeight: "200px", overflowY: "auto" }}
+              sx={{ maxHeight: "400px", overflowY: "auto" }}
             >
               {hospitals
                 .filter((hospital) =>
@@ -185,7 +197,10 @@ export default function AppStepper() {
                 )
                 .map((hospital) => (
                   <Box
-                    onClick={() => setSelectedHospital(hospital.name)}
+                    onClick={() => {
+                      setSelectedHospital(hospital.name);
+                      handleNext();
+                    }}
                     key={hospital.id}
                     sx={{ p: 1 }}
                   >
@@ -279,7 +294,12 @@ export default function AppStepper() {
       <Stepper
         nonLinear
         activeStep={activeStep}
-        alternativeLabel
+        alternativeLabel={!isSmallScreen}
+        sx={{
+          flexDirection: isSmallScreen ? "column" : "row",
+          alignItems: "flex-start",
+          rowGap: 2,
+        }}
         connector={<ColorlibConnector />}
       >
         {steps.map((label, index) => (
@@ -304,13 +324,24 @@ export default function AppStepper() {
             </Box>
           </>
         ) : (
-          <Box sx={{ display: "flex", flexDirection: "row", pt: 24, pb: 8 }}>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              pt: 14,
+              pb: 8,
+            }}
+          >
             <Button
               sx={{
-                width: "200px",
+                width: {
+                  lg: "200px",
+                  xs: "150px",
+                },
                 mr: 1,
                 borderRadius: 3,
                 background: primary,
+
                 textTransform: "capitalize",
               }}
               color="success"
@@ -321,7 +352,10 @@ export default function AppStepper() {
             </Button>
             <Button
               sx={{
-                width: "200px",
+                width: {
+                  lg: "200px",
+                  xs: "150px",
+                },
                 mr: 1,
                 borderRadius: 3,
                 textTransform: "capitalize",

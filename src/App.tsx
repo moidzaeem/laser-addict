@@ -19,7 +19,14 @@ const App: React.FC = () => {
         Schedule your appointment <br /> with LaserAddict
       </Mainheading>
       <Font sx={{ textAlign: "center" }}>Book your appointment today !</Font>
-      <Div sx={{ m: 20 }}>
+      <Div
+        sx={{
+          m: {
+            lg: 20,
+            xs: 2,
+          },
+        }}
+      >
         <Div className="shadow" sx={{ p: 4, borderRadius: 12 }}>
           <AppStepper />
         </Div>
