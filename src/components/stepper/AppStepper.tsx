@@ -173,7 +173,6 @@ const AppStepper: React.FC = () => {
     setUserDetails({ ...userDetails, [event.target.name]: event.target.value });
   };
 
-  const [hospitalFilter, setHospitalFilter] = React.useState("");
   const [searchTerm, setSearchTerm] = React.useState("");
 
   const StepContent = () => {
@@ -181,10 +180,8 @@ const AppStepper: React.FC = () => {
       case 0:
         return (
           <StepSelectHospital
-            hospitalFilter={hospitalFilter}
-            setHospitalFilter={setHospitalFilter}
+            selectedHospital={selectedHospital}
             setSelectedHospital={setSelectedHospital}
-            handleNext={handleNext}
           />
         );
       case 1:
