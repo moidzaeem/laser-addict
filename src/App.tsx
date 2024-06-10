@@ -2,9 +2,9 @@ import React from "react";
 import Navbar from "./components/Navbar";
 import Wrapper, { RainbowColor } from "./utils/layout";
 import { Font, Mainheading } from "./utils/theme/typo";
-import AppStepper from "./components/Stepper";
 import { Div } from "./utils/styled-components";
 import Footer from "./components/Footer";
+import AppStepper from "./components/stepper/AppStepper";
 
 const App: React.FC = () => {
   return (
