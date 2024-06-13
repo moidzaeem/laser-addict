@@ -100,10 +100,7 @@ const AppStepper: React.FC = () => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
   const [activeStep, setActiveStep] = React.useState(0);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [completed, setCompleted] = React.useState<{ [k: number]: boolean }>(
-    {}
-  );
+  const [completed] = React.useState<{ [k: number]: boolean }>({});
   const [selectedHospital, setSelectedHospital] = React.useState("");
   const [selectedService, setSelectedService] = useState<string>("");
 
