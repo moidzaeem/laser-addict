@@ -8,7 +8,6 @@ interface Type {
 const AppButton = ({ text }: Type) => {
   return (
     <div>
-      {" "}
       <Button
         sx={{
           width: {

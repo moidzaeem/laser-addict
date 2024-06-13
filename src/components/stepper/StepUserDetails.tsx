@@ -11,6 +11,7 @@ import {
 import { Font, Heading } from "../../utils/theme/typo";
 
 interface StepUserDetailsProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   userDetails: any;
   handleUserDetailsChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
@@ -32,36 +33,62 @@ const StepUserDetails: React.FC<StepUserDetailsProps> = ({
         style={{ width: "100%" }}
         sx={{ textAlign: "center", mt: 10, mb: 6 }}
       >
-        Enter your details to get registered
+        Please enter your customer details <br /> to attach the session to your
+        file.
       </Heading>
-      <Grid container spacing={3} justifyContent="center">
+      <Font sx={{ textAlign: "center" }}>
+        Please enter your e-mail address, your first name and your date of
+        birth. If you are already a LaserAddict <br /> customer, the system will
+        recognize you and this appointment will be attached to your customer
+        file. <br /> If you have never been a LaserAddict customer, please fill
+        in the additional fields if requested.
+      </Font>
+      <Grid container spacing={3} justifyContent="center" sx={{ p: 12 }}>
         <Grid item xs={12} md={6}>
-          <Font>First Name*</Font>
+          <Font>Email*</Font>
           <CustomTextField
             sx={{ borderRadius: 10, mt: 2 }}
-            label="First Name"
-            name="firstName"
+            name="Email"
             value={userDetails.firstName}
             onChange={handleUserDetailsChange}
           />
         </Grid>
         <Grid item xs={12} md={6}>
-          <Font>Last Name*</Font>
+          <Font>First Name*</Font>
           <CustomTextField
             sx={{ borderRadius: 10, mt: 2 }}
-            label="Last Name"
-            name="lastName"
+            name="firstName"
             value={userDetails.lastName}
             onChange={handleUserDetailsChange}
           />
         </Grid>
         <Grid item xs={12} md={6}>
-          <Font>Your Email*</Font>
+          <Font>Date of Birth*</Font>
           <CustomTextField
             sx={{ borderRadius: 10, mt: 2 }}
-            label="Email"
-            name="email"
             value={userDetails.email}
+            type="datetime-local"
+            onChange={handleUserDetailsChange}
+          />
+        </Grid>
+        <Grid item xs={12} md={6}></Grid>
+      </Grid>
+      <Heading style={{ width: "100%" }} sx={{ textAlign: "center" }}>
+        Additional details
+      </Heading>
+      <Grid
+        sx={{ p: 12 }}
+        container
+        spacing={3}
+        justifyContent="center"
+        alignItems={"center"}
+      >
+        <Grid item xs={12} md={6}>
+          <Font>Last Name*</Font>
+          <CustomTextField
+            sx={{ borderRadius: 10, mt: 2 }}
+            name="lastName"
+            value={userDetails.firstName}
             onChange={handleUserDetailsChange}
           />
         </Grid>
@@ -69,20 +96,20 @@ const StepUserDetails: React.FC<StepUserDetailsProps> = ({
           <Font>Phone*</Font>
           <CustomTextField
             sx={{ borderRadius: 10, mt: 2 }}
-            label="Phone"
-            name="phone"
-            value={userDetails.phone}
+            name="lastName"
+            value={userDetails.lastName}
             onChange={handleUserDetailsChange}
             type="number"
           />
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} md={6} mt={2}>
           <Font>Gender*</Font>
           <RadioGroup
             row
             name="gender"
             value={userDetails.gender}
             onChange={handleUserDetailsChange}
+            sx={{ mt: 2 }}
           >
             <FormControlLabel
               value="male"
@@ -91,7 +118,7 @@ const StepUserDetails: React.FC<StepUserDetailsProps> = ({
             />
             <FormControlLabel
               value="female"
-              control={<Radio sx={{ color: "black" }} />}
+              control={<Radio sx={{ color: "black", ml: 2, mr: 2 }} />}
               label="Female"
             />
             <FormControlLabel
@@ -100,6 +127,16 @@ const StepUserDetails: React.FC<StepUserDetailsProps> = ({
               label="Other"
             />
           </RadioGroup>
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <Font>Enter PromoCode*</Font>
+          <CustomTextField
+            sx={{ borderRadius: 10, mt: 2 }}
+            name="phone"
+            value={userDetails.phone}
+            onChange={handleUserDetailsChange}
+            type="number"
+          />
         </Grid>
       </Grid>
     </Box>

@@ -15,6 +15,7 @@ import {
 } from "@mui/icons-material";
 import { Font, Heading, Label } from "../../utils/theme/typo";
 import SettingsIcon from "@mui/icons-material/Settings";
+import Star from "@mui/icons-material/Star";
 
 const StepCompletion = () => {
   return (
@@ -58,6 +59,28 @@ const StepCompletion = () => {
                 </IconButton>
                 <Typography ml={1}>loremipsum@gmail.com</Typography>
               </Box>
+              <Box
+                sx={{ display: "flex", gap: 3, mt: 3, alignItems: "center" }}
+              >
+                {[1, 2].map(() => (
+                  <Box
+                    sx={{
+                      border: "1px solid grey",
+                      display: "flex",
+                      alignItems: "center",
+                      p: 1,
+                      borderRadius: 2,
+                      gap: 0.5,
+                    }}
+                  >
+                    <img src="/google.svg" alt="" style={{ height: "20px" }} />
+                    <Star sx={{ color: "#FFC107" }} /> <Font>5.0</Font>
+                  </Box>
+                ))}
+              </Box>
+              <Font>
+                Over 1000+ clients have recovered their habbits successfully.
+              </Font>
             </Box>
           </Box>
         </Grid>

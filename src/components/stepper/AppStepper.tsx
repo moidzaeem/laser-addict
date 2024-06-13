@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Stepper from "@mui/material/Stepper";
@@ -25,6 +26,8 @@ import { steps } from "../../utils/data";
 import { Div } from "../../utils/styled-components";
 import { primary } from "../../utils/theme/colors";
 import { StepIconProps } from "@mui/material";
+import StepThankYou from "./StepThankYou";
+import CheckIcon from "@mui/icons-material/Check";
 
 const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
   [`&.${stepConnectorClasses.alternativeLabel}`]: {
@@ -79,7 +82,8 @@ function ColorlibStepIcon(props: StepIconProps) {
     2: <MedicalServicesOutlinedIcon />,
     3: <CalendarMonthOutlinedIcon />,
     4: <BadgeOutlinedIcon />,
-    5: <ThumbUpAltOutlinedIcon />,
+    5: <CheckIcon />,
+    6: <ThumbUpAltOutlinedIcon />,
   };
 
   return (
@@ -96,6 +100,7 @@ const AppStepper: React.FC = () => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
   const [activeStep, setActiveStep] = React.useState(0);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [completed, setCompleted] = React.useState<{ [k: number]: boolean }>(
     {}
   );
@@ -132,13 +137,6 @@ const AppStepper: React.FC = () => {
 
   const handleBack = () =>
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  const handleReset = () => {
-    setActiveStep(0);
-    setCompleted({});
-    setSelectedHospital("");
-    setSelectedService("");
-    setUserDetails({ name: "", email: "", phone: "" });
-  };
 
   const validateStep = () => {
     switch (activeStep) {
@@ -205,11 +203,12 @@ const AppStepper: React.FC = () => {
         );
       case 4:
         return <StepCompletion />;
+      case 5:
+        return <StepThankYou />;
       default:
         return null;
     }
   };
-
   return (
     <Box sx={{ width: "100%" }}>
       <Stepper
@@ -234,17 +233,7 @@ const AppStepper: React.FC = () => {
         sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
       >
         <StepContent />
-        {allStepsCompleted() ? (
-          <>
-            <Box sx={{ mt: 2, mb: 1 }}>
-              All steps completed - you&apos;re finished
-            </Box>
-            <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-              <Box sx={{ flex: "1 1 auto" }} />
-              <Button onClick={handleReset}>Reset</Button>
-            </Box>
-          </>
-        ) : (
+        {activeStep !== 5 && (
           <Box
             sx={{
               display: "flex",
@@ -268,7 +257,7 @@ const AppStepper: React.FC = () => {
               variant="contained"
               onClick={handleNext}
             >
-              {isLastStep() ? "Finish" : "Continue"}
+              {isLastStep() ? "Finish" : "Next"}
             </Button>
             <Button
               sx={{

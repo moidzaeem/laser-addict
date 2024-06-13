@@ -144,11 +144,12 @@ export const CountrySvg = [
 ];
 
 export const steps = [
-  "Select the Nearest Center",
+  "Chooose a center",
   "Select a Service",
   "Select Date and Time",
   "Information about the User’s Details",
   "Confirmation",
+  "Thank You",
 ];
 
 export const services = [
@@ -231,9 +232,64 @@ export const services = [
 ];
 
 export const hospitals = [
-  { id: 1, name: "Ariege" },
-  { id: 2, name: "Bouches - Du - Rhone" },
-  { id: 3, name: "Corse" },
-  { id: 4, name: "Haute - Savoie" },
-  { id: 5, name: "Isere" },
+  {
+    id: 1,
+    name: "LaserAddict-Ambilly",
+    region: "Haute-Savoie 74",
+    img: "/svg/1.svg",
+  },
+  {
+    id: 2,
+    name: "LaserAddict-Grenoble",
+    region: "Isere 38",
+    img: "/svg/2.svg",
+  },
+  {
+    id: 3,
+    name: "LaserAddict-Montbonnot",
+    region: "Isere 38",
+    img: "/svg/2.svg",
+  },
+  {
+    id: 4,
+    name: "LaserAddict-Porto-Vecchio",
+    region: "Corse-du-sud 2A",
+    img: "/svg/3.svg",
+  },
+  {
+    id: 5,
+    name: "LaserAddict-Foix",
+    region: "Ariege 09",
+    img: "/svg/4.svg",
+  },
+  {
+    id: 6,
+    name: "LaserAddict-Marcq-en-Baroeul",
+    region: "Nord 59",
+    img: "/svg/5.svg",
+  },
+  {
+    id: 7,
+    name: "LaserAddict-Montaigu",
+    region: "Vendee 85",
+    img: "/svg/6.svg",
+  },
+  {
+    id: 8,
+    name: "LaserAddict-Reims",
+    region: "Marne 51",
+    img: "/svg/7.svg",
+  },
+  {
+    id: 9,
+    name: "LaserAddict-Venelles",
+    region: "Bouches-du-Rhone 13",
+    img: "/svg/8.svg",
+  },
+  {
+    id: 10,
+    name: "LaserAddict-Coutances",
+    region: "La Manche 50",
+    img: "/svg/9.svg",
+  },
 ];
