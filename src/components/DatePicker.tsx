@@ -10,7 +10,7 @@ interface Pro {
 }
 
 const DatePicker = ({ setGetDateRange }: Pro) => {
-  const [state, setState] = useState([
+  const [state, setState] = useState<any>([
     {
       startDate: new Date(),
       endDate: null,
@@ -30,11 +30,7 @@ const DatePicker = ({ setGetDateRange }: Pro) => {
         moveRangeOnFirstSelection={false}
         ranges={state}
         rangeColors={[primary, alpha]}
-        style={{
-          background: "#FAFAFA",
-          borderRadius: 10,
-          width: "500px",
-        }}
+        style={{ background: "#FAFAFA", borderRadius: 10, width: "500px" }}
       />
     </div>
   );

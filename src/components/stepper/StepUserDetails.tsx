@@ -9,20 +9,13 @@ import {
   Grid,
 } from "@mui/material";
 import { Font, Heading } from "../../utils/theme/typo";
-import { Div } from "../../utils/styled-components";
 
 interface StepUserDetailsProps {
-  userDetails: {
-    firstName: string;
-    lastName: string;
-    email: string;
-    phone: string;
-    gender: string;
-  };
+  userDetails: any;
   handleUserDetailsChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const CustomTextField = styled(TextField)(({ theme }) => ({
+const CustomTextField = styled(TextField)(() => ({
   "& .MuiOutlinedInput-root": {
     borderRadius: 10,
   },

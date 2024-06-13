@@ -102,7 +102,7 @@ const AppStepper: React.FC = () => {
   const [selectedHospital, setSelectedHospital] = React.useState("");
   const [selectedService, setSelectedService] = useState<string>("");
 
-  const [selectedDate, setSelectedDate] = useState([
+  const [selectedDate, setSelectedDate] = useState<any>([
     {
       startDate: new Date(),
       endDate: null,
@@ -137,7 +137,6 @@ const AppStepper: React.FC = () => {
     setCompleted({});
     setSelectedHospital("");
     setSelectedService("");
-    setSelectedDate(null);
     setUserDetails({ name: "", email: "", phone: "" });
   };
 
