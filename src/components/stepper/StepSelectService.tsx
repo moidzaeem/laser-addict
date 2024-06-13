@@ -1,19 +1,21 @@
-import React from "react";
+import { useState } from "react";
 import { Box, TextField, InputAdornment } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import { Heading } from "../../utils/theme/typo";
+import { Font, Heading } from "../../utils/theme/typo";
 import ServiceCard from "../ServiceCard";
 import { services } from "../../utils/data";
 
 interface StepSelectServiceProps {
-  searchTerm: string;
-  setSearchTerm: (term: string) => void;
+  setSelectedService: (name: string) => void;
+  selectedService: any;
 }
 
 const StepSelectService: React.FC<StepSelectServiceProps> = ({
-  searchTerm,
-  setSearchTerm,
+  setSelectedService,
+  selectedService,
 }) => {
+  const [searchTerm, setSearchTerm] = useState("");
+
   const filteredServices = services.filter((service) =>
     service.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -59,11 +61,20 @@ const StepSelectService: React.FC<StepSelectServiceProps> = ({
             display: "flex",
             flexWrap: "wrap",
             justifyContent: "center",
+            width: "100%",
+            maxWidth: "100%",
+            minWidth: "100vh",
           }}
         >
           {filteredServices.map((service) => (
-            <ServiceCard key={service.id} service={service} />
+            <ServiceCard
+              setSelectedService={setSelectedService}
+              key={service.id}
+              service={service}
+              selectedService={selectedService}
+            />
           ))}
+          <Font> {filteredServices.length === 0 && "No Items Found"}</Font>
         </Box>
       </Box>
     </Box>

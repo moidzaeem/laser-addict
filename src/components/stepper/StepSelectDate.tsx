@@ -1,30 +1,21 @@
-import React from "react";
-import { Box, TextField } from "@mui/material";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import DatePicker from "@mui/lab/DatePicker";
-import { Font } from "../../utils/theme/typo";
+import { Box } from "@mui/material";
+import { Heading } from "../../utils/theme/typo";
+import AppDateRangePicker from "../DatePicker";
 
 interface StepSelectDateProps {
-  selectedDate: Date | null;
-  handleDateChange: (date: Date | null) => void;
+  setSelectedDate: any;
 }
 
-const StepSelectDate: React.FC<StepSelectDateProps> = ({
-  selectedDate,
-  handleDateChange,
-}) => {
+const StepSelectDate: React.FC<StepSelectDateProps> = ({ setSelectedDate }) => {
   return (
     <Box>
-      <Font>Select Date and Time:</Font>
-      <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <DatePicker
-          label="Select Date"
-          value={selectedDate}
-          onChange={handleDateChange}
-          renderInput={(params) => <TextField {...params} />}
-        />
-      </LocalizationProvider>
+      <Heading
+        style={{ width: "100%" }}
+        sx={{ textAlign: "center", mt: 10, mb: 4 }}
+      >
+        Select Date and Time:
+      </Heading>
+      <AppDateRangePicker setGetDateRange={setSelectedDate} />
     </Box>
   );
 };

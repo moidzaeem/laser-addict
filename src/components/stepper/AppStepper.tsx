@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
@@ -100,8 +100,16 @@ const AppStepper: React.FC = () => {
     {}
   );
   const [selectedHospital, setSelectedHospital] = React.useState("");
-  const [selectedService, setSelectedService] = React.useState("");
-  const [selectedDate, setSelectedDate] = React.useState<Date | null>(null);
+  const [selectedService, setSelectedService] = useState<string>("");
+
+  const [selectedDate, setSelectedDate] = useState([
+    {
+      startDate: new Date(),
+      endDate: null,
+      key: "selection",
+    },
+  ]);
+
   const [userDetails, setUserDetails] = React.useState({
     name: "",
     email: "",
@@ -154,10 +162,10 @@ const AppStepper: React.FC = () => {
         }
         break;
       case 3:
-        if (!userDetails.name || !userDetails.email || !userDetails.phone) {
-          toast("Please fill in all user details before proceeding.");
-          return false;
-        }
+        // if (!userDetails.name || !userDetails.email || !userDetails.phone) {
+        //   toast("Please fill in all user details before proceeding.");
+        //   return false;
+        // }
         break;
       default:
         break;
@@ -165,15 +173,11 @@ const AppStepper: React.FC = () => {
     return true;
   };
 
-  const handleDateChange = (date: Date | null) => setSelectedDate(date);
-
   const handleUserDetailsChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setUserDetails({ ...userDetails, [event.target.name]: event.target.value });
   };
-
-  const [searchTerm, setSearchTerm] = React.useState("");
 
   const StepContent = () => {
     switch (activeStep) {
@@ -187,17 +191,12 @@ const AppStepper: React.FC = () => {
       case 1:
         return (
           <StepSelectService
-            searchTerm={searchTerm}
-            setSearchTerm={setSearchTerm}
+            setSelectedService={setSelectedService}
+            selectedService={selectedService}
           />
         );
       case 2:
-        return (
-          <StepSelectDate
-            selectedDate={selectedDate}
-            handleDateChange={handleDateChange}
-          />
-        );
+        return <StepSelectDate setSelectedDate={setSelectedDate} />;
       case 3:
         return (
           <StepUserDetails

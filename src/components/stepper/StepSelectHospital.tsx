@@ -7,18 +7,18 @@ import { Font, Heading } from "../../utils/theme/typo";
 import { primary } from "../../utils/theme/colors";
 
 interface StepSelectHospitalProps {
-  setSelectedHospital: () => void;
-  selectedHospital: null;
+  setSelectedHospital: any;
+  selectedHospital: any;
 }
 
 const StepSelectHospital = ({
   setSelectedHospital,
   selectedHospital,
 }: StepSelectHospitalProps) => {
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState<any>("");
   const [filteredHospitals, setFilteredHospitals] = useState(hospitals);
 
-  const handleSearchChange = (event) => {
+  const handleSearchChange = (event: { target: { value: any } }) => {
     const value = event.target.value;
     setSearchTerm(value);
 
@@ -28,7 +28,7 @@ const StepSelectHospital = ({
     setFilteredHospitals(filtered);
   };
 
-  const handleHospitalClick = (hospital) => {
+  const handleHospitalClick = (hospital: { id: number; name: string }) => {
     setSelectedHospital(hospital);
   };
   return (
