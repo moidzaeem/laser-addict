@@ -22,16 +22,13 @@ const DatePicker = ({ setGetDateRange }: Pro) => {
     setGetDateRange("[item.selection]");
   };
   return (
-    <div>
-      <DateRange
-        editableDateInputs={true}
-        onChange={(item) => handleChange(item)}
-        moveRangeOnFirstSelection={false}
-        ranges={state}
-        rangeColors={[primary, alpha]}
-        style={{ background: "#FAFAFA", borderRadius: 10, width: "500px" }}
-      />
-    </div>
+    <DateRange
+      editableDateInputs={true}
+      onChange={(item) => handleChange(item)}
+      moveRangeOnFirstSelection={false}
+      ranges={state}
+      rangeColors={[primary, alpha]}
+    />
   );
 };
 
