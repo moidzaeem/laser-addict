@@ -45,7 +45,7 @@ const App: React.FC = () => {
           sx={{
             p: {
               lg: 4,
-              xs: 1,
+              xs: 4,
             },
             borderRadius: 12,
           }}

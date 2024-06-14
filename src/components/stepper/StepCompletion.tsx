@@ -27,7 +27,7 @@ const StepCompletion = () => {
         Appointment confirmation
       </Heading>
 
-      <Grid container spacing={4}>
+      <Grid container>
         <Grid item xs={12} md={6}>
           <Heading variant="h6">Center Information</Heading>
           <Box display="flex" alignItems="center" mt={2}>
@@ -96,7 +96,14 @@ const StepCompletion = () => {
           item
           xs={12}
           md={6}
-          sx={{ p: 3, borderRadius: 4 }}
+          sx={{
+            p: 3,
+            borderRadius: 4,
+            mt: {
+              lg: 0,
+              xs: 12,
+            },
+          }}
         >
           <Box>
             <Heading variant="h6" mb={5} mt={2}>
