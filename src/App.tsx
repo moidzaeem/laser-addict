@@ -21,7 +21,17 @@ const App: React.FC = () => {
       <Mainheading sx={{ textAlign: "center", mt: 6, mb: 2 }}>
         Schedule your appointment <br /> with LaserAddict
       </Mainheading>
-      <Font sx={{ textAlign: "center" }}>Book your appointment today !</Font>
+      <Font
+        sx={{
+          textAlign: "center",
+          mb: {
+            lg: 6,
+            xs: 10,
+          },
+        }}
+      >
+        Book your appointment today !
+      </Font>
       <Div
         sx={{
           m: {
@@ -30,7 +40,16 @@ const App: React.FC = () => {
           },
         }}
       >
-        <Div className="shadow" sx={{ p: 4, borderRadius: 12 }}>
+        <Div
+          className="shadow"
+          sx={{
+            p: {
+              lg: 4,
+              xs: 1,
+            },
+            borderRadius: 12,
+          }}
+        >
           <AppStepper />
         </Div>
       </Div>

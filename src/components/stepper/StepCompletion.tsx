@@ -19,7 +19,7 @@ import Star from "@mui/icons-material/Star";
 
 const StepCompletion = () => {
   return (
-    <Container maxWidth="md" sx={{ mt: 4 }}>
+    <Container maxWidth="md" sx={{ mt: 4, px: { xs: 2, sm: 3 } }}>
       <Heading
         style={{ width: "100%" }}
         sx={{ textAlign: "center", mt: 10, mb: 6, lineHeight: 3 }}
@@ -60,10 +60,17 @@ const StepCompletion = () => {
                 <Typography ml={1}>loremipsum@gmail.com</Typography>
               </Box>
               <Box
-                sx={{ display: "flex", gap: 3, mt: 3, alignItems: "center" }}
+                sx={{
+                  display: "flex",
+                  gap: 3,
+                  mt: 3,
+                  alignItems: "center",
+                  flexWrap: "wrap",
+                }}
               >
-                {[1, 2].map(() => (
+                {[1, 2].map((_, index) => (
                   <Box
+                    key={index}
                     sx={{
                       border: "1px solid grey",
                       display: "flex",
@@ -79,7 +86,7 @@ const StepCompletion = () => {
                 ))}
               </Box>
               <Font>
-                Over 1000+ clients have recovered their habbits successfully.
+                Over 1000+ clients have recovered their habits successfully.
               </Font>
             </Box>
           </Box>
@@ -88,8 +95,8 @@ const StepCompletion = () => {
           className="shadow"
           item
           xs={12}
-          sx={{ p: 3, borderRadius: 4 }}
           md={6}
+          sx={{ p: 3, borderRadius: 4 }}
         >
           <Box>
             <Heading variant="h6" mb={5} mt={2}>

@@ -28,7 +28,7 @@ const StepUserDetails: React.FC<StepUserDetailsProps> = ({
   handleUserDetailsChange,
 }) => {
   return (
-    <Box width={"100%"} p={2}>
+    <Box width={"100%"}>
       <Heading
         style={{ width: "100%" }}
         sx={{ textAlign: "center", mt: 10, mb: 6 }}
@@ -36,14 +36,24 @@ const StepUserDetails: React.FC<StepUserDetailsProps> = ({
         Please enter your customer details <br /> to attach the session to your
         file.
       </Heading>
-      <Font sx={{ textAlign: "center" }}>
+      <Font sx={{ textAlign: "center", mb: 5 }}>
         Please enter your e-mail address, your first name and your date of
         birth. If you are already a LaserAddict <br /> customer, the system will
         recognize you and this appointment will be attached to your customer
         file. <br /> If you have never been a LaserAddict customer, please fill
         in the additional fields if requested.
       </Font>
-      <Grid container spacing={3} justifyContent="center" sx={{ p: 12 }}>
+      <Grid
+        container
+        spacing={3}
+        justifyContent="center"
+        sx={{
+          p: {
+            lg: 12,
+            xs: 2,
+          },
+        }}
+      >
         <Grid item xs={12} md={6}>
           <Font>Email*</Font>
           <CustomTextField
@@ -73,11 +83,16 @@ const StepUserDetails: React.FC<StepUserDetailsProps> = ({
         </Grid>
         <Grid item xs={12} md={6}></Grid>
       </Grid>
-      <Heading style={{ width: "100%" }} sx={{ textAlign: "center" }}>
+      <Heading style={{ width: "100%" }} sx={{ textAlign: "center", mb: 6 }}>
         Additional details
       </Heading>
       <Grid
-        sx={{ p: 12 }}
+        sx={{
+          p: {
+            lg: 12,
+            xs: 2,
+          },
+        }}
         container
         spacing={3}
         justifyContent="center"

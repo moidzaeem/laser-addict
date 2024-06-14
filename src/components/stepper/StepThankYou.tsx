@@ -6,6 +6,8 @@ import { primary } from "../../utils/theme/colors";
 import { Button } from "@mui/material";
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import DoneIcon from "@mui/icons-material/Done";
+
 const StepThankYou: React.FC = () => {
   return (
     <Box>
@@ -24,7 +26,20 @@ const StepThankYou: React.FC = () => {
         link to modify or <br /> cancel it.
       </Font>
       <Div display={"flex"} justifyContent={"center"} mt={12} gap={3}>
-        <img src="/done.svg" alt="" />
+        <Div
+          sx={{
+            height: 100,
+            width: 100,
+            p: 3,
+            background: "#C7E6C8",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            borderRadius: "100%",
+          }}
+        >
+          <DoneIcon color="success" sx={{ fontSize: 70 }} />
+        </Div>
       </Div>
       <Div
         justifyContent={"center"}

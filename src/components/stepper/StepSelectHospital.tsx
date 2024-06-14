@@ -62,7 +62,10 @@ const StepSelectHospital = ({
           className="shadow"
           variant="outlined"
           sx={{
-            mb: 2,
+            mb: {
+              lg: 2,
+              xs: 6,
+            },
             "& .MuiOutlinedInput-notchedOutline": { border: "none" },
             borderRadius: 3,
           }}
@@ -127,20 +130,25 @@ const StepSelectHospital = ({
           <Font>{filteredHospitals.length === 0 && "No Items Found"}</Font>
         </Box>
       </Box>
-      <Box sx={{ display: "flex", alignItems: "center" }}>
-        {[1, 2, 3, 4, 5].map(() => (
-          <StarIcon sx={{ fontSize: 20, color: "#FFC107" }} />
-        ))}
-        <img
-          src="/google.svg"
-          style={{ width: 20, marginLeft: 10, marginRight: 10 }}
-          alt=""
-        />
-        <img
-          src="/facebook.svg"
-          style={{ width: 20, marginRight: 10 }}
-          alt=""
-        />
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          flexDirection: {
+            lg: "row",
+            xs: "column",
+          },
+          gap: 2,
+        }}
+      >
+        <Box>
+          {[1, 2, 3, 4, 5].map(() => (
+            <StarIcon sx={{ fontSize: 20, color: "#FFC107" }} />
+          ))}
+        </Box>
+        <img src="/google.svg" style={{ width: 20 }} alt="" />
+        <img src="/facebook.svg" style={{ width: 20 }} alt="" />
 
         <Font>A method approved by over 3,000 customers across France</Font>
       </Box>

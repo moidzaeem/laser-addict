@@ -227,7 +227,16 @@ const AppStepper: React.FC = () => {
       </Stepper>
 
       <Div
-        sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          mt: {
+            lg: 0,
+            xs: 5,
+          },
+          mb: 5,
+        }}
       >
         <StepContent />
         {activeStep !== 5 && (
@@ -247,14 +256,13 @@ const AppStepper: React.FC = () => {
                 height: "40px",
                 mr: 1,
                 borderRadius: 3,
-                background: primary,
                 textTransform: "capitalize",
               }}
-              color="success"
-              variant="contained"
-              onClick={handleNext}
+              color="inherit"
+              disabled={activeStep === 0}
+              onClick={handleBack}
             >
-              {isLastStep() ? "Finish" : "Next"}
+              Back
             </Button>
             <Button
               sx={{
@@ -264,13 +272,14 @@ const AppStepper: React.FC = () => {
                 height: "40px",
                 mr: 1,
                 borderRadius: 3,
+                background: primary,
                 textTransform: "capitalize",
               }}
-              color="inherit"
-              disabled={activeStep === 0}
-              onClick={handleBack}
+              color="success"
+              variant="contained"
+              onClick={handleNext}
             >
-              Back
+              {isLastStep() ? "Finish" : "Next"}
             </Button>
           </Box>
         )}

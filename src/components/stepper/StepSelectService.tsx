@@ -45,10 +45,31 @@ const StepSelectService: React.FC<StepSelectServiceProps> = ({
   );
 
   return (
-    <Box sx={{ p: 4 }}>
+    <Box
+      sx={{
+        p: {
+          lg: 4,
+          xs: 2,
+        },
+      }}
+    >
       <Grid container spacing={2} justifyContent="center" alignItems="center">
         <Grid item xs={12} sm={12} md={8}>
-          <Heading sx={{ textAlign: "center" }}>Select a service</Heading>
+          <Heading
+            sx={{
+              textAlign: "center",
+              mt: {
+                lg: 0,
+                xs: 6,
+              },
+              mb: {
+                lg: 0,
+                xs: 6,
+              },
+            }}
+          >
+            Select a service
+          </Heading>
         </Grid>
         <Grid item xs={12} sm={12} md={4}>
           <TextField
@@ -70,7 +91,16 @@ const StepSelectService: React.FC<StepSelectServiceProps> = ({
           />
         </Grid>
       </Grid>
-      <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          mt: {
+            lg: 2,
+            xs: 5,
+          },
+        }}
+      >
         <Grid container spacing={2} justifyContent="center">
           {filteredServices.map((service) => (
             <Grid item key={service.id} xs={12} sm={6} md={3}>
