@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
@@ -117,7 +117,10 @@ const AppStepper: React.FC = () => {
     email: "",
     phone: "",
   });
-
+  // Add this useEffect to scroll to the top on step change
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [activeStep]);
   const totalSteps = () => steps.length;
   const completedSteps = () => Object.keys(completed).length;
   const isLastStep = () => activeStep === totalSteps() - 1;
