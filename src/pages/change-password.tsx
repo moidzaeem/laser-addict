@@ -1,13 +1,15 @@
 import { Div } from "../utils/styled-components";
-import { Grid } from "@mui/material";
+import { Grid, IconButton } from "@mui/material";
 import { Caption, Font, Heading } from "../utils/theme/typo";
 import { InputField } from "../components/atoms/Input";
 import AppButton from "../components/Button";
 import { Link } from "react-router-dom";
 import PublicWrapper from "../utils/layout/PublicWrapper";
 import DisclaimerSection from "../components/sections/disclaimer-section";
+import LockOpenIcon from "@mui/icons-material/LockOpen";
+import { primary } from "../utils/theme/colors";
 
-const LoginPage: React.FC = () => {
+const ChangePasswordPage: React.FC = () => {
   return (
     <div>
       <PublicWrapper>
@@ -29,26 +31,35 @@ const LoginPage: React.FC = () => {
                 Log in to the LaserAddict CRM
               </Heading>
               <div style={{ height: 50 }} />
-              <Font>Enter your practitioner identifier below</Font>
+              <Font>
+                Enter your username and your center name <br /> to receive a
+                password recovery e-mail.
+              </Font>
               <div style={{ height: 30 }} />
-              <Font>E-mail address</Font>
-              <div style={{ height: 10 }} />
-              <InputField />
-              <div style={{ height: 20 }} />
-              <Font>Password</Font>
+              <Font>New Password</Font>
               <div style={{ height: 10 }} />
               <InputField type="password" />
               <div style={{ height: 20 }} />
-              <Link to="/forget-password">
-                <AppButton text="Login" height={50} fullWidth />
+              <Font>Confirm Password</Font>
+              <div style={{ height: 10 }} />
+              <InputField type="password" />
+              <div style={{ height: 20 }} />
+              <Link to="/reset-mail-success">
+                <AppButton
+                  text="Confirm Password Change"
+                  height={50}
+                  fullWidth
+                />
               </Link>
-              <div style={{ height: 40 }} />
+              <div style={{ height: 80 }} />
               <Div sx={{ display: "flex", justifyContent: "space-between" }}>
-                <Caption>Become a partner</Caption>
-                <Caption>Forgotten password</Caption>
+                <MiniIcon text={"8 characters minimum"} />
+                <MiniIcon text={"Upper and lower case+ Special characters"} />
+                <MiniIcon text={"Passwords are different"} />
               </Div>
             </Div>
           </Grid>
+
           {/* right grid with a button */}
           <DisclaimerSection />
         </Grid>
@@ -57,4 +68,29 @@ const LoginPage: React.FC = () => {
   );
 };
 
-export default LoginPage;
+export default ChangePasswordPage;
+
+interface MiniProp {
+  text: string;
+}
+
+const MiniIcon: React.FC<MiniProp> = ({ text }) => {
+  return (
+    <Div
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        textAlign: "center",
+      }}
+    >
+      <IconButton
+        sx={{ background: primary, borderRadius: 2, color: "white", mb: 2 }}
+      >
+        <LockOpenIcon />
+      </IconButton>
+      <Caption>{text}</Caption>
+    </Div>
+  );
+};

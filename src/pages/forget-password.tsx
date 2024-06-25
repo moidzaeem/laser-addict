@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import PublicWrapper from "../utils/layout/PublicWrapper";
 import DisclaimerSection from "../components/sections/disclaimer-section";
 
-const LoginPage: React.FC = () => {
+const ForgetPasswordPage: React.FC = () => {
   return (
     <div>
       <PublicWrapper>
@@ -29,26 +29,27 @@ const LoginPage: React.FC = () => {
                 Log in to the LaserAddict CRM
               </Heading>
               <div style={{ height: 50 }} />
-              <Font>Enter your practitioner identifier below</Font>
+              <Font>
+                Enter your username and your center name <br /> to receive a
+                password recovery e-mail.
+              </Font>
               <div style={{ height: 30 }} />
               <Font>E-mail address</Font>
               <div style={{ height: 10 }} />
               <InputField />
               <div style={{ height: 20 }} />
-              <Font>Password</Font>
+              <Font> LaserAddict - Grenoble</Font>
               <div style={{ height: 10 }} />
-              <InputField type="password" />
+              <InputField />
               <div style={{ height: 20 }} />
-              <Link to="/forget-password">
-                <AppButton text="Login" height={50} fullWidth />
+              <Link to="/change-password">
+                <AppButton text="Reset your password" height={50} fullWidth />
               </Link>
               <div style={{ height: 40 }} />
-              <Div sx={{ display: "flex", justifyContent: "space-between" }}>
-                <Caption>Become a partner</Caption>
-                <Caption>Forgotten password</Caption>
-              </Div>
+              <Caption>Become a partner</Caption>
             </Div>
           </Grid>
+
           {/* right grid with a button */}
           <DisclaimerSection />
         </Grid>
@@ -57,4 +58,4 @@ const LoginPage: React.FC = () => {
   );
 };
 
-export default LoginPage;
+export default ForgetPasswordPage;
