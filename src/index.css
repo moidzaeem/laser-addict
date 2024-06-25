@@ -10,3 +10,28 @@
 .shadow {
   box-shadow: 0px 6.71px 18.31px 12.21px rgba(0, 0, 0, 0.04);
 }
+
+/* scroll bar */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #279f81;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+/* center a div */
+.center {
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  -webkit-transform: translate(-50%, -50%) !important;
+  -moz-transform: translate(-50%, -50%) !important;
+  -ms-transform: translate(-50%, -50%) !important;
+  -o-transform: translate(-50%, -50%) !important;
+}

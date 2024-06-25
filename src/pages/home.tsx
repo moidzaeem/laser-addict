@@ -1,10 +1,10 @@
 import React from "react";
-import Navbar from "../components/Navbar";
 import Wrapper, { RainbowColor } from "../utils/layout";
 import { Font, Mainheading } from "../utils/theme/typo";
 import { Div } from "../utils/styled-components";
 import Footer from "../components/Footer";
 import AppStepper from "../components/stepper/AppStepper";
+import AuthNavbar from "../components/molecules/AuthNavbar";
 
 const HomePage: React.FC = () => {
   return (
@@ -16,7 +16,7 @@ const HomePage: React.FC = () => {
         }
       />
       <Wrapper>
-        <Navbar />
+        <AuthNavbar />
       </Wrapper>
       <Mainheading sx={{ textAlign: "center", mt: 6, mb: 2 }}>
         Schedule your appointment <br /> with LaserAddict

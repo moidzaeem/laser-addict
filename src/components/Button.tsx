@@ -3,17 +3,19 @@ import { primary } from "../utils/theme/colors";
 
 interface Type {
   text: string;
+  fullWidth?: boolean;
+  height?: number;
 }
 
-const AppButton = ({ text }: Type) => {
+const AppButton = ({ text, fullWidth, height }: Type) => {
   return (
     <div>
       <Button
         sx={{
           width: {
-            xs: "150px",
+            xs: fullWidth ? "100%" : "150px",
           },
-          height: "40px",
+          height: height || "40px",
           mr: 1,
           borderRadius: 3,
           background: primary,
