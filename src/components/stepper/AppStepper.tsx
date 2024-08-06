@@ -8,8 +8,7 @@ import StepLabel from "@mui/material/StepLabel";
 import StepConnector, {
   stepConnectorClasses,
 } from "@mui/material/StepConnector";
-import { styled } from "@mui/material/styles";
-import { useTheme } from "@mui/material/styles";
+import { styled, useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { toast } from "react-toastify";
 import StepSelectHospital from "./StepSelectHospital";
@@ -28,6 +27,7 @@ import { primary } from "../../utils/theme/colors";
 import { StepIconProps } from "@mui/material";
 import StepThankYou from "./StepThankYou";
 import CheckIcon from "@mui/icons-material/Check";
+import { Hospital, UserDetails,Service } from "../types";
 
 const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
   [`&.${stepConnectorClasses.alternativeLabel}`]: {
@@ -101,8 +101,8 @@ const AppStepper: React.FC = () => {
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
   const [activeStep, setActiveStep] = React.useState(0);
   const [completed] = React.useState<{ [k: number]: boolean }>({});
-  const [selectedHospital, setSelectedHospital] = React.useState("");
-  const [selectedService, setSelectedService] = useState<string>("");
+  const [selectedHospital, setSelectedHospital] = React.useState<Hospital>();
+  const [selectedService, setSelectedService] = useState<Service>();
 
   const [selectedDate, setSelectedDate] = useState<any>([
     {
@@ -112,10 +112,13 @@ const AppStepper: React.FC = () => {
     },
   ]);
 
-  const [userDetails, setUserDetails] = React.useState({
-    name: "",
+  const [userDetails, setUserDetails] = useState<UserDetails>({
     email: "",
+    firstName: "",
+    lastName: "",
+    dateOfBirth: "",
     phone: "",
+    gender: "",
   });
   // Add this useEffect to scroll to the top on step change
   useEffect(() => {
@@ -132,6 +135,7 @@ const AppStepper: React.FC = () => {
       isLastStep() && !allStepsCompleted()
         ? steps.findIndex((_, i) => !(i in completed))
         : activeStep + 1;
+        console.log(userDetails);
     setActiveStep(newActiveStep);
   };
 
@@ -169,18 +173,22 @@ const AppStepper: React.FC = () => {
     }
     return true;
   };
+  const handleChange = (e:any) => {
+    const { name, value, } = e.target;
+    setUserDetails(prevData => ({
+        ...prevData,
+        [name]:value
+    }));
+};
 
-  const handleUserDetailsChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setUserDetails({ ...userDetails, [event.target.name]: event.target.value });
-  };
+  
 
   const StepContent = () => {
     switch (activeStep) {
       case 0:
         return (
           <StepSelectHospital
+           // @ts-ignore
             selectedHospital={selectedHospital}
             setSelectedHospital={setSelectedHospital}
           />
@@ -188,8 +196,10 @@ const AppStepper: React.FC = () => {
       case 1:
         return (
           <StepSelectService
+           // @ts-ignore
             setSelectedService={setSelectedService}
             selectedService={selectedService}
+            selectedHospital={selectedHospital}
           />
         );
       case 2:
@@ -198,11 +208,16 @@ const AppStepper: React.FC = () => {
         return (
           <StepUserDetails
             userDetails={userDetails}
-            handleUserDetailsChange={handleUserDetailsChange}
+            handleUserDetailsChange={handleChange}
           />
         );
       case 4:
-        return <StepCompletion />;
+        return (
+          <StepCompletion
+            selectedHospital={selectedHospital}
+            selectedService={selectedService}
+          />
+        );
       case 5:
         return <StepThankYou />;
       default:

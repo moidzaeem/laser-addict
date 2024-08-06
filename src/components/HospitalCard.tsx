@@ -6,7 +6,7 @@ import { primary } from "../utils/theme/colors";
 
 interface hospitalCardProps {
   hospital: any;
-  setSelectedHospital: (name: string) => void;
+  setSelectedHospital: any
   selectedHospital: any;
 }
 
@@ -15,11 +15,11 @@ const HospitalCard = ({
   setSelectedHospital,
   selectedHospital,
 }: hospitalCardProps) => {
-  const isSelected = selectedHospital === hospital.name;
+  const isSelected = selectedHospital?.id === hospital.id;
 
   return (
     <Div
-      onClick={() => setSelectedHospital(hospital.name)}
+      onClick={() => setSelectedHospital(hospital)}
       sx={{
         width: 180,
         m: 2,
@@ -41,14 +41,14 @@ const HospitalCard = ({
           justifyContent={"flex-start"}
           alignItems={"flex-start"}
         >
-          <img style={{ height: 40 }} src={hospital.img} alt={hospital.name} />
+          <img style={{ height: 40 }} src={`http://laser-backend.test/${hospital.logo}`} alt={hospital.center_name} />
         </Div>
         <Font
           sx={{ fontWeight: "bold", mt: 1, width: "100%", textAlign: "left" }}
         >
-          {hospital.name}
+          {hospital.center_name}
         </Font>
-        <Label sx={{ mt: 1, textAlign: "left" }}>{hospital.region}</Label>
+        <Label sx={{ mt: 1, textAlign: "left" }}>{hospital.region} {hospital.region_no}</Label>
       </CardContent>
     </Div>
   );

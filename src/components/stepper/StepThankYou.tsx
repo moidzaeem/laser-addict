@@ -2,10 +2,6 @@ import React from "react";
 import Box from "@mui/material/Box";
 import { Font, Heading } from "../../utils/theme/typo";
 import { Div } from "../../utils/styled-components";
-import { primary } from "../../utils/theme/colors";
-import { Button } from "@mui/material";
-import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
-import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import DoneIcon from "@mui/icons-material/Done";
 
 const StepThankYou: React.FC = () => {
@@ -57,7 +53,7 @@ const StepThankYou: React.FC = () => {
           },
         }}
       >
-        <Button
+        {/* <Button
           onClick={() => window.location.reload()}
           startIcon={<PictureAsPdfIcon />}
           sx={{
@@ -76,8 +72,8 @@ const StepThankYou: React.FC = () => {
           variant="contained"
         >
           Download PDF
-        </Button>
-        <Button
+        </Button> */}
+        {/* <Button
           startIcon={<CalendarMonthIcon />}
           sx={{
             width: {
@@ -95,7 +91,7 @@ const StepThankYou: React.FC = () => {
           variant="contained"
         >
           Add it to my calendar
-        </Button>
+        </Button> */}
       </Div>
     </Box>
   );

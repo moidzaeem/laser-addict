@@ -1,42 +1,74 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from "react";
+import { useState, useEffect, ChangeEvent } from "react";
+import axios from "axios";
 import {
   Box,
   TextField,
   InputAdornment,
   useMediaQuery,
   useTheme,
+  Autocomplete
 } from "@mui/material";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import { hospitals } from "../../utils/data";
 import { Font, Heading } from "../../utils/theme/typo";
 import HospitalCard from "../HospitalCard";
 import StarIcon from "@mui/icons-material/Star";
+import { Hospital } from "../types";
 
 interface StepSelectHospitalProps {
-  setSelectedHospital: any;
-  selectedHospital: any;
+  setSelectedHospital:any
+  selectedHospital: Hospital;
 }
 
 const StepSelectHospital = ({
   setSelectedHospital,
   selectedHospital,
 }: StepSelectHospitalProps) => {
-  const [searchTerm, setSearchTerm] = useState<any>("");
-  const [filteredHospitals, setFilteredHospitals] = useState(hospitals);
+  const [allHospitals, setAllHospitals] = useState<Hospital[]>([]);
+  const [displayedHospitals, setDisplayedHospitals] = useState<Hospital[]>([]);
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
-  const handleSearchChange = (event: { target: { value: any } }) => {
-    const value = event.target.value;
-    setSearchTerm(value);
+  useEffect(() => {
+    const fetchHospitals = async () => {
+      try {
+        const response = await axios.get("http://laser-backend.test/api/get-centers");
+        if (response.data.success) {
+          setAllHospitals(response.data.data);
+          setDisplayedHospitals(response.data.data);
+        } else {
+          setError("Failed to fetch data");
+        }
+      } catch (error) {
+        setError("An error occurred while fetching data");
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    const filtered = hospitals.filter((hospital) =>
-      hospital.name.toLowerCase().includes(value.toLowerCase())
-    );
-    setFilteredHospitals(filtered);
+    fetchHospitals();
+  }, []);
+
+  useEffect(() => {
+    if (searchTerm === "") {
+      setDisplayedHospitals(allHospitals);
+    } else {
+      const filtered = allHospitals.filter((hospital) =>
+        hospital.center_name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setDisplayedHospitals(filtered);
+    }
+  }, [searchTerm, allHospitals]);
+
+  const handleSearchChange = (_event: ChangeEvent<HTMLInputElement>, newInputValue: string) => {
+    setSearchTerm(newInputValue);
   };
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
 
   return (
     <Box
@@ -46,7 +78,6 @@ const StepSelectHospital = ({
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
-        justifyItems: "center",
         alignItems: "center",
         padding: isSmallScreen ? 2 : 4,
       }}
@@ -57,33 +88,43 @@ const StepSelectHospital = ({
         >
           Choose a center
         </Heading>
-        <TextField
-          fullWidth
-          className="shadow"
-          variant="outlined"
-          sx={{
-            mb: {
-              lg: 2,
-              xs: 6,
-            },
-            "& .MuiOutlinedInput-notchedOutline": { border: "none" },
-            borderRadius: 3,
-          }}
-          placeholder="Find the nearest center to me"
-          value={searchTerm || (selectedHospital && selectedHospital.name)}
-          onChange={handleSearchChange}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <LocationOnIcon />
-              </InputAdornment>
-            ),
-            endAdornment: (
-              <InputAdornment position="end">
-                <ArrowDropDownIcon />
-              </InputAdornment>
-            ),
-          }}
+        <Autocomplete
+          freeSolo
+          options={displayedHospitals}
+          // @ts-ignore
+          getOptionLabel={(option) => option.center_name}
+          // @ts-ignore
+          onInputChange={(event, newInputValue) => handleSearchChange(event, newInputValue)}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              fullWidth
+              className="shadow"
+              variant="outlined"
+              sx={{
+                mb: {
+                  lg: 2,
+                  xs: 6,
+                },
+                "& .MuiOutlinedInput-notchedOutline": { border: "none" },
+                borderRadius: 3,
+              }}
+              placeholder="Find the nearest center to me"
+              InputProps={{
+                ...params.InputProps,
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <LocationOnIcon />
+                  </InputAdornment>
+                ),
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <ArrowDropDownIcon />
+                  </InputAdornment>
+                ),
+              }}
+            />
+          )}
         />
       </Box>
       <Box
@@ -118,16 +159,18 @@ const StepSelectHospital = ({
             minWidth: "100%",
           }}
         >
-          {filteredHospitals.map((hospital) => (
-            <HospitalCard
-              setSelectedHospital={setSelectedHospital}
-              key={hospital.id}
-              hospital={hospital}
-              selectedHospital={selectedHospital}
-            />
-          ))}
-
-          <Font>{filteredHospitals.length === 0 && "No Items Found"}</Font>
+          {displayedHospitals.length > 0 ? (
+            displayedHospitals.map((hospital) => (
+              <HospitalCard
+                setSelectedHospital={setSelectedHospital}
+                key={hospital.id}
+                hospital={hospital}
+                selectedHospital={selectedHospital}
+              />
+            ))
+          ) : (
+            <Font>No Items Found</Font>
+          )}
         </Box>
       </Box>
       <Box
@@ -143,12 +186,12 @@ const StepSelectHospital = ({
         }}
       >
         <Box>
-          {[1, 2, 3, 4, 5].map(() => (
-            <StarIcon sx={{ fontSize: 20, color: "#FFC107" }} />
+          {[1, 2, 3, 4, 5].map((_, index) => (
+            <StarIcon key={index} sx={{ fontSize: 20, color: "#FFC107" }} />
           ))}
         </Box>
-        <img src="/google.svg" style={{ width: 20 }} alt="" />
-        <img src="/facebook.svg" style={{ width: 20 }} alt="" />
+        <img src="/google.svg" style={{ width: 20 }} alt="Google logo" />
+        <img src="/facebook.svg" style={{ width: 20 }} alt="Facebook logo" />
 
         <Font>A method approved by over 3,000 customers across France</Font>
       </Box>

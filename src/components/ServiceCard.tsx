@@ -4,11 +4,12 @@ import { Div } from "../utils/styled-components";
 import { primary } from "../utils/theme/colors";
 import StarIcon from "@mui/icons-material/Star";
 import Radio from "@mui/material/Radio";
+import { Service } from "./types";
 
 interface ServiceCardProps {
-  service: any;
-  setSelectedService: (name: string) => void;
-  selectedService: any;
+  service: Service;
+  setSelectedService: any;
+  selectedService: Service;
 }
 
 const ServiceCard = ({
@@ -16,11 +17,11 @@ const ServiceCard = ({
   setSelectedService,
   selectedService,
 }: ServiceCardProps) => {
-  const isSelected = selectedService === service.name;
+  const isSelected = selectedService?.id === service?.id;
 
   return (
     <Div
-      onClick={() => setSelectedService(service.name)}
+      onClick={() => setSelectedService(service)}
       sx={{
         minWidth: 180,
         m: 2,
@@ -42,7 +43,9 @@ const ServiceCard = ({
           justifyContent={"space-between"}
           alignItems={"center"}
         >
-          <img style={{ height: 40 }} src={service.img} alt={service.name} />
+          <img style={{ height: 40 }} 
+           // @ts-ignore
+          src={`http://laser-backend.test/${service?.logo}`} alt={service?.name} />
           <img
             style={{ height: 20 }}
             src={"/images/11.png"}
@@ -50,8 +53,8 @@ const ServiceCard = ({
           />
         </Div>
         <Font sx={{ fontWeight: "bold", mt: 1 }}>{service.name}</Font>
-        {service.sessions && <Label sx={{ mt: 1 }}>{service.sessions}</Label>}
-        <Label>{service.duration}</Label>
+        {/* {service.sessions && <Label sx={{ mt: 1 }}>{service.sessions}</Label>} */}
+        <Label>{service.duration} Minutes</Label>
         {[1, 2, 3, 4, 5].map(() => (
           <StarIcon sx={{ width: 15, color: primary, mt: 1 }} />
         ))}
@@ -62,7 +65,7 @@ const ServiceCard = ({
           alignItems={"center"}
         >
           <Font sx={{ fontWeight: "bold", fontSize: 20, mt: 1 }}>
-            {service.price}
+            {service.price} EURO
           </Font>
           <Radio
             checked

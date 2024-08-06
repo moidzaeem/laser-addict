@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   Box,
   Container,
@@ -16,15 +17,22 @@ import {
 import { Font, Heading, Label } from "../../utils/theme/typo";
 import SettingsIcon from "@mui/icons-material/Settings";
 import Star from "@mui/icons-material/Star";
+import { Hospital, Service } from '../types';
 
-const StepCompletion = () => {
+interface StepCompletionProps {
+  selectedHospital: Hospital | undefined;
+  selectedService: Service | undefined;
+}
+
+const StepCompletion: React.FC<StepCompletionProps> = ({ selectedHospital, selectedService }) => {
+  if(!selectedHospital || !selectedService) return;
   return (
     <Container maxWidth="md" sx={{ mt: 4, px: { xs: 2, sm: 3 } }}>
       <Heading
         style={{ width: "100%" }}
         sx={{ textAlign: "center", mt: 10, mb: 6, lineHeight: 3 }}
       >
-        Appointment confirmation
+        Appointment Confirmation
       </Heading>
 
       <Grid container>
@@ -32,9 +40,9 @@ const StepCompletion = () => {
           <Heading variant="h6">Center Information</Heading>
           <Box display="flex" alignItems="center" mt={2}>
             <Box>
-              <Font>LaserAddict Grenoble</Font>
-              <Font>1 Rue des Pins</Font>
-              <Font>38000, Grenoble</Font>
+              <Font>{selectedHospital.center_name}</Font>
+              <Font>{selectedHospital.region}</Font>
+              <Font>{selectedHospital.region_no}, {selectedHospital.region}</Font>
             </Box>
           </Box>
           <Divider sx={{ my: 6 }} />
@@ -147,17 +155,17 @@ const StepCompletion = () => {
                 </IconButton>
                 <Box ml={2}>
                   <Font>Laser session</Font>
-                  <Label>Stop Cannabis</Label>
-                  <Label>Duration 1 hour</Label>
+                  <Label>{selectedService.name}</Label>
+                  <Label>Duration  {selectedService.duration} Minutes</Label>
                 </Box>
                 <Box ml="auto">
-                  <Typography>€ 290</Typography>
+                  <Typography>€ {selectedService.price}</Typography>
                 </Box>
               </Box>
               <Divider sx={{ my: 5 }} />
               <Box display="flex" justifyContent="space-between">
                 <Heading variant="h6">Total</Heading>
-                <Font variant="h6">€ 290</Font>
+                <Font variant="h6">€ {selectedService.price}</Font>
               </Box>
             </Box>
           </Box>

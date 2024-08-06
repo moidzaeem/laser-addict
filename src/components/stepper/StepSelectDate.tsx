@@ -15,7 +15,9 @@ const StepSelectDate: React.FC<StepSelectDateProps> = ({ setSelectedDate }) => {
       >
         Select Date and Time:
       </Heading>
-      <AppDateRangePicker setGetDateRange={setSelectedDate} />
+      <AppDateRangePicker
+       // @ts-ignore
+       setGetDateRange={setSelectedDate} />
     </Box>
   );
 };
